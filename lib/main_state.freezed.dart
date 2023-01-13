@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MainState {
   getWetherFromCoordinates? get weatherResponse =>
       throw _privateConstructorUsedError;
+  ForecastResponse? get forecastResponse => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MainStateCopyWith<MainState> get copyWith =>
@@ -29,7 +30,9 @@ abstract class $MainStateCopyWith<$Res> {
   factory $MainStateCopyWith(MainState value, $Res Function(MainState) then) =
       _$MainStateCopyWithImpl<$Res, MainState>;
   @useResult
-  $Res call({getWetherFromCoordinates? weatherResponse});
+  $Res call(
+      {getWetherFromCoordinates? weatherResponse,
+      ForecastResponse? forecastResponse});
 }
 
 /// @nodoc
@@ -46,12 +49,17 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
   @override
   $Res call({
     Object? weatherResponse = freezed,
+    Object? forecastResponse = freezed,
   }) {
     return _then(_value.copyWith(
       weatherResponse: freezed == weatherResponse
           ? _value.weatherResponse
           : weatherResponse // ignore: cast_nullable_to_non_nullable
               as getWetherFromCoordinates?,
+      forecastResponse: freezed == forecastResponse
+          ? _value.forecastResponse
+          : forecastResponse // ignore: cast_nullable_to_non_nullable
+              as ForecastResponse?,
     ) as $Val);
   }
 }
@@ -63,7 +71,9 @@ abstract class _$$_MainStateCopyWith<$Res> implements $MainStateCopyWith<$Res> {
       __$$_MainStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({getWetherFromCoordinates? weatherResponse});
+  $Res call(
+      {getWetherFromCoordinates? weatherResponse,
+      ForecastResponse? forecastResponse});
 }
 
 /// @nodoc
@@ -78,12 +88,17 @@ class __$$_MainStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? weatherResponse = freezed,
+    Object? forecastResponse = freezed,
   }) {
     return _then(_$_MainState(
       weatherResponse: freezed == weatherResponse
           ? _value.weatherResponse
           : weatherResponse // ignore: cast_nullable_to_non_nullable
               as getWetherFromCoordinates?,
+      forecastResponse: freezed == forecastResponse
+          ? _value.forecastResponse
+          : forecastResponse // ignore: cast_nullable_to_non_nullable
+              as ForecastResponse?,
     ));
   }
 }
@@ -91,14 +106,17 @@ class __$$_MainStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_MainState implements _MainState {
-  const _$_MainState({required this.weatherResponse});
+  const _$_MainState(
+      {required this.weatherResponse, required this.forecastResponse});
 
   @override
   final getWetherFromCoordinates? weatherResponse;
+  @override
+  final ForecastResponse? forecastResponse;
 
   @override
   String toString() {
-    return 'MainState(weatherResponse: $weatherResponse)';
+    return 'MainState(weatherResponse: $weatherResponse, forecastResponse: $forecastResponse)';
   }
 
   @override
@@ -107,11 +125,14 @@ class _$_MainState implements _MainState {
         (other.runtimeType == runtimeType &&
             other is _$_MainState &&
             (identical(other.weatherResponse, weatherResponse) ||
-                other.weatherResponse == weatherResponse));
+                other.weatherResponse == weatherResponse) &&
+            (identical(other.forecastResponse, forecastResponse) ||
+                other.forecastResponse == forecastResponse));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, weatherResponse);
+  int get hashCode =>
+      Object.hash(runtimeType, weatherResponse, forecastResponse);
 
   @JsonKey(ignore: true)
   @override
@@ -122,11 +143,13 @@ class _$_MainState implements _MainState {
 
 abstract class _MainState implements MainState {
   const factory _MainState(
-          {required final getWetherFromCoordinates? weatherResponse}) =
-      _$_MainState;
+      {required final getWetherFromCoordinates? weatherResponse,
+      required final ForecastResponse? forecastResponse}) = _$_MainState;
 
   @override
   getWetherFromCoordinates? get weatherResponse;
+  @override
+  ForecastResponse? get forecastResponse;
   @override
   @JsonKey(ignore: true)
   _$$_MainStateCopyWith<_$_MainState> get copyWith =>

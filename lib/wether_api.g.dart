@@ -19,7 +19,7 @@ class _WetherApi implements WetherApi {
   String? baseUrl;
 
   @override
-  Future<getWetherFromCoordinates> getWeather(
+  Future<getWetherFromCoordinates> getWeatherRightAway(
     lat,
     lon,
     q,
@@ -52,6 +52,43 @@ class _WetherApi implements WetherApi {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = getWetherFromCoordinates.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ForecastResponse> getWeatherForecast(
+    lat,
+    lon,
+    q,
+    appid,
+    lang,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'lat': lat,
+      r'lon': lon,
+      r'q': q,
+      r'appid': appid,
+      r'lang': lang,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ForecastResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
+    )
+            .compose(
+              _dio.options,
+              '/forecast',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ForecastResponse.fromJson(_result.data!);
     return value;
   }
 

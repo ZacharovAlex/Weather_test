@@ -11,10 +11,11 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../getWeatherResponse.dart' as _i7;
 import '../main_cubit.dart' as _i6;
+import '../open_weather_models/forecast_model/forecastResponse.dart' as _i8;
 import '../repository/repository_weather.dart' as _i5;
 import '../wether_api.dart' as _i4;
 import 'modules/network_module.dart'
-    as _i8; // ignore_for_file: unnecessary_lambdas
+    as _i9; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -34,15 +35,17 @@ _i1.GetIt $initGetIt(
       () => registerModule.wetherApi(get<_i3.Dio>()));
   gh.singleton<_i5.WeatherRepository>(
       _i5.WeatherRepository(get<_i4.WetherApi>()));
-  gh.factoryParam<_i6.MainCubit, _i7.getWetherFromCoordinates?, dynamic>((
+  gh.factoryParam<_i6.MainCubit, _i7.getWetherFromCoordinates?,
+      _i8.ForecastResponse?>((
     weather,
-    _,
+    weatherForecast,
   ) =>
       _i6.MainCubit(
         weather,
+        weatherForecast,
         get<_i5.WeatherRepository>(),
       ));
   return get;
 }
 
-class _$RegisterModule extends _i8.RegisterModule {}
+class _$RegisterModule extends _i9.RegisterModule {}
