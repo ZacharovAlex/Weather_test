@@ -15,8 +15,8 @@ class MainCubit extends Cubit<MainState> {
 
   MainCubit(@factoryParam getWetherFromCoordinates? weather, this._weatherRepository) : super(MainState(weatherResponse: weather)) {
     if (weather == null) {
-     // _getWeatherFromCoordinates();
-      _getWeatherFromCity();
+      _getWeatherFromCoordinates();
+     // _getWeatherFromCity();
     }
   }
 
@@ -27,11 +27,12 @@ class MainCubit extends Cubit<MainState> {
   }
 
   Future<void> _getWeatherFromCity() async {
-    final data = await _weatherRepository.getWeather(null,null,'Moscow');
+    final data = await _weatherRepository.getWeather(null,null,'Александров');
     emit(state.copyWith(weatherResponse: data));
   }
 
   changeCity() {
+  //  _getWeatherFromCoordinates();
     _getWeatherFromCity();
   }
 

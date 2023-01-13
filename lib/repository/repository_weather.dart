@@ -16,7 +16,7 @@ class WeatherRepository {
       print('gfgfgf');
       var response = await _weatherApi.getWeather(lat,lon,city,'1ca4000c3a81765bcd106423bf367de7','ru');
 
-     // var response = await _weatherApi.getWeather(coordinate.latitude.toString(), coordinate.longitude.toString(), '1ca4000c3a81765bcd106423bf367de7','ru');
+    //  var response = await _weatherApi.getWeather(coordinate.latitude.toString(), coordinate.longitude.toString(), '1ca4000c3a81765bcd106423bf367de7','ru');
       print(response);
       print('otvet response ');
       try {

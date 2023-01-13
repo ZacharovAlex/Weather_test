@@ -59,6 +59,7 @@ class RowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = context.select((MainCubit cubit) => cubit.state.weatherResponse);
+   // final tempcelc = (data!.main!.temp!-270).toInt();
     return Padding(padding: const EdgeInsets.only(top: 40),child:
         Column(children: [
           TopCity(), //trytrtyur
@@ -85,7 +86,7 @@ mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               Assets.icons.kapli.svg(),
 //if(data!=null) Text(data!..toString()) else CircularProgressIndicator(),
               Assets.icons.termometr.svg(),
-             if(data!=null) Text(data!.main!.temp.toString()) else CircularProgressIndicator(),
+             if(data!=null) Text('${((data!.main!.temp!-273).toInt()).toString()}') else CircularProgressIndicator(),
               Assets.icons.wind.svg(),
               if(data!=null) Text("${data!.wind!.speed.toString()}m/s") else CircularProgressIndicator(),
           ],),

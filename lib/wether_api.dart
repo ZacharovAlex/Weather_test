@@ -14,7 +14,7 @@ abstract class WetherApi {
   Future<getWetherFromCoordinates> getWeather(
   @Query('lat') String? lat,
   @Query('lon') String? lon,
-      @Query('q') String? q,
+     @Query('q') String? q,
   @Query('appid') String appid,
   @Query('lang') String lang
      // @Query(String lat) String lat,
