@@ -25,6 +25,7 @@ class _WetherApi implements WetherApi {
     q,
     appid,
     lang,
+    units,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -33,6 +34,7 @@ class _WetherApi implements WetherApi {
       r'q': q,
       r'appid': appid,
       r'lang': lang,
+      r'units': units,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -62,6 +64,7 @@ class _WetherApi implements WetherApi {
     q,
     appid,
     lang,
+    units,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -70,6 +73,7 @@ class _WetherApi implements WetherApi {
       r'q': q,
       r'appid': appid,
       r'lang': lang,
+      r'units': units,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

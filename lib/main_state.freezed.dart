@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MainState {
+  int get dayForecasting => throw _privateConstructorUsedError;
   getWetherFromCoordinates? get weatherResponse =>
       throw _privateConstructorUsedError;
   ForecastResponse? get forecastResponse => throw _privateConstructorUsedError;
@@ -31,7 +32,8 @@ abstract class $MainStateCopyWith<$Res> {
       _$MainStateCopyWithImpl<$Res, MainState>;
   @useResult
   $Res call(
-      {getWetherFromCoordinates? weatherResponse,
+      {int dayForecasting,
+      getWetherFromCoordinates? weatherResponse,
       ForecastResponse? forecastResponse});
 }
 
@@ -48,10 +50,15 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? dayForecasting = null,
     Object? weatherResponse = freezed,
     Object? forecastResponse = freezed,
   }) {
     return _then(_value.copyWith(
+      dayForecasting: null == dayForecasting
+          ? _value.dayForecasting
+          : dayForecasting // ignore: cast_nullable_to_non_nullable
+              as int,
       weatherResponse: freezed == weatherResponse
           ? _value.weatherResponse
           : weatherResponse // ignore: cast_nullable_to_non_nullable
@@ -72,7 +79,8 @@ abstract class _$$_MainStateCopyWith<$Res> implements $MainStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {getWetherFromCoordinates? weatherResponse,
+      {int dayForecasting,
+      getWetherFromCoordinates? weatherResponse,
       ForecastResponse? forecastResponse});
 }
 
@@ -87,10 +95,15 @@ class __$$_MainStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? dayForecasting = null,
     Object? weatherResponse = freezed,
     Object? forecastResponse = freezed,
   }) {
     return _then(_$_MainState(
+      dayForecasting: null == dayForecasting
+          ? _value.dayForecasting
+          : dayForecasting // ignore: cast_nullable_to_non_nullable
+              as int,
       weatherResponse: freezed == weatherResponse
           ? _value.weatherResponse
           : weatherResponse // ignore: cast_nullable_to_non_nullable
@@ -107,8 +120,13 @@ class __$$_MainStateCopyWithImpl<$Res>
 
 class _$_MainState implements _MainState {
   const _$_MainState(
-      {required this.weatherResponse, required this.forecastResponse});
+      {this.dayForecasting = 0,
+      required this.weatherResponse,
+      required this.forecastResponse});
 
+  @override
+  @JsonKey()
+  final int dayForecasting;
   @override
   final getWetherFromCoordinates? weatherResponse;
   @override
@@ -116,7 +134,7 @@ class _$_MainState implements _MainState {
 
   @override
   String toString() {
-    return 'MainState(weatherResponse: $weatherResponse, forecastResponse: $forecastResponse)';
+    return 'MainState(dayForecasting: $dayForecasting, weatherResponse: $weatherResponse, forecastResponse: $forecastResponse)';
   }
 
   @override
@@ -124,6 +142,8 @@ class _$_MainState implements _MainState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MainState &&
+            (identical(other.dayForecasting, dayForecasting) ||
+                other.dayForecasting == dayForecasting) &&
             (identical(other.weatherResponse, weatherResponse) ||
                 other.weatherResponse == weatherResponse) &&
             (identical(other.forecastResponse, forecastResponse) ||
@@ -131,8 +151,8 @@ class _$_MainState implements _MainState {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, weatherResponse, forecastResponse);
+  int get hashCode => Object.hash(
+      runtimeType, dayForecasting, weatherResponse, forecastResponse);
 
   @JsonKey(ignore: true)
   @override
@@ -143,9 +163,12 @@ class _$_MainState implements _MainState {
 
 abstract class _MainState implements MainState {
   const factory _MainState(
-      {required final getWetherFromCoordinates? weatherResponse,
+      {final int dayForecasting,
+      required final getWetherFromCoordinates? weatherResponse,
       required final ForecastResponse? forecastResponse}) = _$_MainState;
 
+  @override
+  int get dayForecasting;
   @override
   getWetherFromCoordinates? get weatherResponse;
   @override

@@ -20,6 +20,11 @@ class MainCubit extends Cubit<MainState> {
      // _getWeatherFromCity();
     }
   }
+  void changeDayForecasting(int dayForecastToView) {
+    print('$dayForecastToView');
+    emit(state.copyWith(dayForecasting: dayForecastToView));
+  }
+
 
   Future<void> _getWeatherFromCoordinates() async {
     var coordinate = await determinePosition();

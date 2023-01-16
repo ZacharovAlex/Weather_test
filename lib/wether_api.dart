@@ -17,7 +17,9 @@ abstract class WetherApi {
   @Query('lon') String? lon,
      @Query('q') String? q,
   @Query('appid') String appid,
-  @Query('lang') String lang
+  @Query('lang') String lang,
+  @Query('units') String units
+
      // @Query(String lat) String lat,
      // @Part() String lon,
      // @Part() String appid,
@@ -29,7 +31,8 @@ abstract class WetherApi {
       @Query('lon') String? lon,
       @Query('q') String? q,
       @Query('appid') String appid,
-      @Query('lang') String lang
+      @Query('lang') String lang,
+  @Query('units') String units
       // @Query(String lat) String lat,
       // @Part() String lon,
       // @Part() String appid,

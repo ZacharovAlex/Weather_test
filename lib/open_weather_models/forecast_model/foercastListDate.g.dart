@@ -26,7 +26,7 @@ ForecastDateList _$ForecastDateListFromJson(Map<String, dynamic> json) =>
       rain: json['rain'] == null
           ? null
           : Rain.fromJson(json['rain'] as Map<String, dynamic>),
-      dtTxt: json['dtTxt'] as String?,
+      dtTxt: json['dt_txt'] as String?,
     );
 
 Map<String, dynamic> _$ForecastDateListToJson(ForecastDateList instance) =>
@@ -39,5 +39,5 @@ Map<String, dynamic> _$ForecastDateListToJson(ForecastDateList instance) =>
       'visibility': instance.visibility,
       'pop': instance.pop,
       'rain': instance.rain,
-      'dtTxt': instance.dtTxt,
+      'dt_txt': instance.dtTxt,
     };

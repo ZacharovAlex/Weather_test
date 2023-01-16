@@ -16,6 +16,7 @@ class ForecastDateList {
   double? pop;
   Rain? rain;
  // Sys? sys;
+  @JsonKey(name:'dt_txt')
   String? dtTxt;
 
   ForecastDateList(
@@ -31,5 +32,5 @@ class ForecastDateList {
         this.dtTxt});
 
   factory ForecastDateList.fromJson(Map<String, dynamic> json) => _$ForecastDateListFromJson(json);
-
+ // int get firstIndexNextDay =>
 }
