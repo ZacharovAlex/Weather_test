@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MainState {
+  NowOrForecast get nowOrForecast => throw _privateConstructorUsedError;
   int get dayForecasting => throw _privateConstructorUsedError;
   getWetherFromCoordinates? get weatherResponse =>
       throw _privateConstructorUsedError;
@@ -32,7 +33,8 @@ abstract class $MainStateCopyWith<$Res> {
       _$MainStateCopyWithImpl<$Res, MainState>;
   @useResult
   $Res call(
-      {int dayForecasting,
+      {NowOrForecast nowOrForecast,
+      int dayForecasting,
       getWetherFromCoordinates? weatherResponse,
       ForecastResponse? forecastResponse});
 }
@@ -50,11 +52,16 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? nowOrForecast = null,
     Object? dayForecasting = null,
     Object? weatherResponse = freezed,
     Object? forecastResponse = freezed,
   }) {
     return _then(_value.copyWith(
+      nowOrForecast: null == nowOrForecast
+          ? _value.nowOrForecast
+          : nowOrForecast // ignore: cast_nullable_to_non_nullable
+              as NowOrForecast,
       dayForecasting: null == dayForecasting
           ? _value.dayForecasting
           : dayForecasting // ignore: cast_nullable_to_non_nullable
@@ -79,7 +86,8 @@ abstract class _$$_MainStateCopyWith<$Res> implements $MainStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int dayForecasting,
+      {NowOrForecast nowOrForecast,
+      int dayForecasting,
       getWetherFromCoordinates? weatherResponse,
       ForecastResponse? forecastResponse});
 }
@@ -95,11 +103,16 @@ class __$$_MainStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? nowOrForecast = null,
     Object? dayForecasting = null,
     Object? weatherResponse = freezed,
     Object? forecastResponse = freezed,
   }) {
     return _then(_$_MainState(
+      nowOrForecast: null == nowOrForecast
+          ? _value.nowOrForecast
+          : nowOrForecast // ignore: cast_nullable_to_non_nullable
+              as NowOrForecast,
       dayForecasting: null == dayForecasting
           ? _value.dayForecasting
           : dayForecasting // ignore: cast_nullable_to_non_nullable
@@ -120,10 +133,14 @@ class __$$_MainStateCopyWithImpl<$Res>
 
 class _$_MainState implements _MainState {
   const _$_MainState(
-      {this.dayForecasting = 0,
+      {this.nowOrForecast = NowOrForecast.now,
+      this.dayForecasting = 0,
       required this.weatherResponse,
       required this.forecastResponse});
 
+  @override
+  @JsonKey()
+  final NowOrForecast nowOrForecast;
   @override
   @JsonKey()
   final int dayForecasting;
@@ -134,7 +151,7 @@ class _$_MainState implements _MainState {
 
   @override
   String toString() {
-    return 'MainState(dayForecasting: $dayForecasting, weatherResponse: $weatherResponse, forecastResponse: $forecastResponse)';
+    return 'MainState(nowOrForecast: $nowOrForecast, dayForecasting: $dayForecasting, weatherResponse: $weatherResponse, forecastResponse: $forecastResponse)';
   }
 
   @override
@@ -142,6 +159,8 @@ class _$_MainState implements _MainState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MainState &&
+            (identical(other.nowOrForecast, nowOrForecast) ||
+                other.nowOrForecast == nowOrForecast) &&
             (identical(other.dayForecasting, dayForecasting) ||
                 other.dayForecasting == dayForecasting) &&
             (identical(other.weatherResponse, weatherResponse) ||
@@ -151,8 +170,8 @@ class _$_MainState implements _MainState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, dayForecasting, weatherResponse, forecastResponse);
+  int get hashCode => Object.hash(runtimeType, nowOrForecast, dayForecasting,
+      weatherResponse, forecastResponse);
 
   @JsonKey(ignore: true)
   @override
@@ -163,10 +182,13 @@ class _$_MainState implements _MainState {
 
 abstract class _MainState implements MainState {
   const factory _MainState(
-      {final int dayForecasting,
+      {final NowOrForecast nowOrForecast,
+      final int dayForecasting,
       required final getWetherFromCoordinates? weatherResponse,
       required final ForecastResponse? forecastResponse}) = _$_MainState;
 
+  @override
+  NowOrForecast get nowOrForecast;
   @override
   int get dayForecasting;
   @override

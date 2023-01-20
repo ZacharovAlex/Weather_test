@@ -32,6 +32,39 @@ return list!.sublist(0,indexNextDay+1);
    ff.add(list!.sublist(indexNextDay+25,indexNextDay+32));
    return ff;
  }
+
+ int temperatureNight(List<ForecastDateList> data){
+    var ff = (data[0].main!.temp)!.round();
+    for(var i=0;i<=data.length-1;i++){
+      if (ff>data[i].main!.temp!){
+        ff=(data[i].main!.temp)!.round();
+      }
+
+    }
+    return ff;
+ }
+  int temperatureDay(List<ForecastDateList> data){
+    var ff = (data[0].main!.temp)!.round();
+    for(var i=0;i<=data.length-1;i++){
+      if (ff<data[i].main!.temp!){
+        ff=(data[i].main!.temp)!.round();
+      }
+
+    }
+    return ff;
+  }
+ // List<List<dynamic>>? forecastMediumValues(List<List<ForecastDateList>> data){
+ //   List<dynamic> mediumValues = [];
+ //    List<List<dynamic>> ff =[];
+ //    double tempMedium = 0;
+ //    for (var i=1;i<=data.length-1;i++){
+ //      for(var ii=0;ii<=data[i].length;ii++){
+ //        tempMedium+=data![i]![ii]!.main!.temp!;
+ //        mediumValues.addAll([data![i]![ii]!.main!.temp])
+ //      }
+ //
+ //    }
+ // }
  // String  dayTemperatureWhole(List<ForecastDateList> bb){
  //    return bb.;
  // }

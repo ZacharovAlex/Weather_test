@@ -1,0 +1,6 @@
+
+
+enum NowOrForecast {
+  now,
+  forecast
+}

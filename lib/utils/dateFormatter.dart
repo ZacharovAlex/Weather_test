@@ -1,9 +1,16 @@
 
 import 'dart:convert';
 
-String dateFormatter(DateTime date) {
+import 'package:intl/intl.dart';
+
+import '../enum_now_or_forecast.dart';
+
+String dateFormatter(DateTime date,NowOrForecast trigger) {
    String dayStr;
-  if (date.day==DateTime.now().day) {dayStr='Сегодня';} else if (date.day==DateTime.now().day+1){dayStr='Завтра';} else dayStr='';
+  if(trigger==NowOrForecast.now){dayStr='Сейчас';} else if (date.day==DateTime.now().day) {dayStr='Сегодня';}
+  else if (date.day==DateTime.now().day+1){dayStr='Завтра';}
+  else if (date.day==DateTime.now().day+2){dayStr='Послезавтра';}
+  else dayStr='';
   dynamic dayData =
       '{ "1" : "Понедельник", "2" : "Вторник", "3" : "Среда", "4" : "Четверг", "5" : "Пятница", "6" : "Суббота", "7" : "Воскресенье" }';
 
@@ -19,4 +26,16 @@ String dateFormatter(DateTime date) {
       date.year.toString() +
       " " +
       dayStr;
+}
+
+DateTime dateParser(String dataTime) {
+  DateFormat format = DateFormat("yyyy-MM-dd hh:mm:ss");
+ return  format.parse(dataTime);
+ //  var a = data!.where((element) => format.parse(element.dtTxt!).day==DateTime.now().day).toList();
+}
+
+String weekdayParser(DateTime data) {
+  dynamic dayData =
+      '{ "1" : "Понедельник", "2" : "Вторник", "3" : "Среда", "4" : "Четверг", "5" : "Пятница", "6" : "Суббота", "7" : "Воскресенье" }';
+  return json.decode(dayData)['${data.weekday}'];
 }

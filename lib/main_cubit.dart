@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:weather_simple/repository/repository_weather.dart';
 
 import 'coord.dart';
+import 'enum_now_or_forecast.dart';
 import 'getWeatherResponse.dart';
 import 'main_state.dart';
 import 'open_weather_models/forecast_model/forecastResponse.dart';
@@ -16,13 +17,16 @@ class MainCubit extends Cubit<MainState> {
 
   MainCubit(@factoryParam getWetherFromCoordinates? weather,@factoryParam ForecastResponse? weatherForecast, this._weatherRepository) : super(MainState(weatherResponse: weather,forecastResponse: weatherForecast)) {
     if (weather == null) {
-      _getWeatherFromCoordinates();
-     // _getWeatherFromCity();
+     // _getWeatherFromCoordinates();
+      _getWeatherFromCity();
     }
   }
   void changeDayForecasting(int dayForecastToView) {
-    print('$dayForecastToView');
     emit(state.copyWith(dayForecasting: dayForecastToView));
+  }
+
+  void changeNowOrForecast(NowOrForecast change) {
+    emit(state.copyWith(nowOrForecast: change));
   }
 
 
@@ -35,8 +39,10 @@ class MainCubit extends Cubit<MainState> {
   }
 
   Future<void> _getWeatherFromCity() async {
-    final data = await _weatherRepository.getWeatherRightAway(null,null,'Александров');
+    final data = await _weatherRepository.getWeatherRightAway(null,null,'Мытищи');
+    final dataForecast = await _weatherRepository.getWeatherForecast(null,null,'Мытищи');
     emit(state.copyWith(weatherResponse: data));
+    emit(state.copyWith(forecastResponse: dataForecast));
   }
 
   changeCity() {

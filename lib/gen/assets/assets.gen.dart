@@ -14,6 +14,10 @@ import 'package:flutter/services.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/backScreen.png
+  AssetGenImage get backScreen =>
+      const AssetGenImage('assets/icons/backScreen.png');
+
   /// File path: assets/icons/cloud2.svg
   SvgGenImage get cloud2 => const SvgGenImage('assets/icons/cloud2.svg');
 
@@ -28,6 +32,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/sun.svg
   SvgGenImage get sun => const SvgGenImage('assets/icons/sun.svg');
+
+  /// File path: assets/icons/sun2.png
+  AssetGenImage get sun2 => const AssetGenImage('assets/icons/sun2.png');
 
   /// File path: assets/icons/termometr.svg
   SvgGenImage get termometr => const SvgGenImage('assets/icons/termometr.svg');
