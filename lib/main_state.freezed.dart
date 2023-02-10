@@ -21,6 +21,9 @@ mixin _$MainState {
   getWetherFromCoordinates? get weatherResponse =>
       throw _privateConstructorUsedError;
   ForecastResponse? get forecastResponse => throw _privateConstructorUsedError;
+  bool get selected => throw _privateConstructorUsedError;
+  List<List<ForecastDateList>>? get arrayForecastByDays =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MainStateCopyWith<MainState> get copyWith =>
@@ -36,7 +39,9 @@ abstract class $MainStateCopyWith<$Res> {
       {NowOrForecast nowOrForecast,
       int dayForecasting,
       getWetherFromCoordinates? weatherResponse,
-      ForecastResponse? forecastResponse});
+      ForecastResponse? forecastResponse,
+      bool selected,
+      List<List<ForecastDateList>>? arrayForecastByDays});
 }
 
 /// @nodoc
@@ -56,6 +61,8 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
     Object? dayForecasting = null,
     Object? weatherResponse = freezed,
     Object? forecastResponse = freezed,
+    Object? selected = null,
+    Object? arrayForecastByDays = freezed,
   }) {
     return _then(_value.copyWith(
       nowOrForecast: null == nowOrForecast
@@ -74,6 +81,14 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
           ? _value.forecastResponse
           : forecastResponse // ignore: cast_nullable_to_non_nullable
               as ForecastResponse?,
+      selected: null == selected
+          ? _value.selected
+          : selected // ignore: cast_nullable_to_non_nullable
+              as bool,
+      arrayForecastByDays: freezed == arrayForecastByDays
+          ? _value.arrayForecastByDays
+          : arrayForecastByDays // ignore: cast_nullable_to_non_nullable
+              as List<List<ForecastDateList>>?,
     ) as $Val);
   }
 }
@@ -89,7 +104,9 @@ abstract class _$$_MainStateCopyWith<$Res> implements $MainStateCopyWith<$Res> {
       {NowOrForecast nowOrForecast,
       int dayForecasting,
       getWetherFromCoordinates? weatherResponse,
-      ForecastResponse? forecastResponse});
+      ForecastResponse? forecastResponse,
+      bool selected,
+      List<List<ForecastDateList>>? arrayForecastByDays});
 }
 
 /// @nodoc
@@ -107,6 +124,8 @@ class __$$_MainStateCopyWithImpl<$Res>
     Object? dayForecasting = null,
     Object? weatherResponse = freezed,
     Object? forecastResponse = freezed,
+    Object? selected = null,
+    Object? arrayForecastByDays = freezed,
   }) {
     return _then(_$_MainState(
       nowOrForecast: null == nowOrForecast
@@ -125,6 +144,14 @@ class __$$_MainStateCopyWithImpl<$Res>
           ? _value.forecastResponse
           : forecastResponse // ignore: cast_nullable_to_non_nullable
               as ForecastResponse?,
+      selected: null == selected
+          ? _value.selected
+          : selected // ignore: cast_nullable_to_non_nullable
+              as bool,
+      arrayForecastByDays: freezed == arrayForecastByDays
+          ? _value._arrayForecastByDays
+          : arrayForecastByDays // ignore: cast_nullable_to_non_nullable
+              as List<List<ForecastDateList>>?,
     ));
   }
 }
@@ -136,7 +163,10 @@ class _$_MainState implements _MainState {
       {this.nowOrForecast = NowOrForecast.now,
       this.dayForecasting = 0,
       required this.weatherResponse,
-      required this.forecastResponse});
+      required this.forecastResponse,
+      this.selected = false,
+      final List<List<ForecastDateList>>? arrayForecastByDays})
+      : _arrayForecastByDays = arrayForecastByDays;
 
   @override
   @JsonKey()
@@ -148,10 +178,21 @@ class _$_MainState implements _MainState {
   final getWetherFromCoordinates? weatherResponse;
   @override
   final ForecastResponse? forecastResponse;
+  @override
+  @JsonKey()
+  final bool selected;
+  final List<List<ForecastDateList>>? _arrayForecastByDays;
+  @override
+  List<List<ForecastDateList>>? get arrayForecastByDays {
+    final value = _arrayForecastByDays;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'MainState(nowOrForecast: $nowOrForecast, dayForecasting: $dayForecasting, weatherResponse: $weatherResponse, forecastResponse: $forecastResponse)';
+    return 'MainState(nowOrForecast: $nowOrForecast, dayForecasting: $dayForecasting, weatherResponse: $weatherResponse, forecastResponse: $forecastResponse, selected: $selected, arrayForecastByDays: $arrayForecastByDays)';
   }
 
   @override
@@ -166,12 +207,22 @@ class _$_MainState implements _MainState {
             (identical(other.weatherResponse, weatherResponse) ||
                 other.weatherResponse == weatherResponse) &&
             (identical(other.forecastResponse, forecastResponse) ||
-                other.forecastResponse == forecastResponse));
+                other.forecastResponse == forecastResponse) &&
+            (identical(other.selected, selected) ||
+                other.selected == selected) &&
+            const DeepCollectionEquality()
+                .equals(other._arrayForecastByDays, _arrayForecastByDays));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, nowOrForecast, dayForecasting,
-      weatherResponse, forecastResponse);
+  int get hashCode => Object.hash(
+      runtimeType,
+      nowOrForecast,
+      dayForecasting,
+      weatherResponse,
+      forecastResponse,
+      selected,
+      const DeepCollectionEquality().hash(_arrayForecastByDays));
 
   @JsonKey(ignore: true)
   @override
@@ -185,7 +236,9 @@ abstract class _MainState implements MainState {
       {final NowOrForecast nowOrForecast,
       final int dayForecasting,
       required final getWetherFromCoordinates? weatherResponse,
-      required final ForecastResponse? forecastResponse}) = _$_MainState;
+      required final ForecastResponse? forecastResponse,
+      final bool selected,
+      final List<List<ForecastDateList>>? arrayForecastByDays}) = _$_MainState;
 
   @override
   NowOrForecast get nowOrForecast;
@@ -195,6 +248,10 @@ abstract class _MainState implements MainState {
   getWetherFromCoordinates? get weatherResponse;
   @override
   ForecastResponse? get forecastResponse;
+  @override
+  bool get selected;
+  @override
+  List<List<ForecastDateList>>? get arrayForecastByDays;
   @override
   @JsonKey(ignore: true)
   _$$_MainStateCopyWith<_$_MainState> get copyWith =>

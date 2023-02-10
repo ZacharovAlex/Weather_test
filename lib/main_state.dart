@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'enum_now_or_forecast.dart';
 import 'getWeatherResponse.dart';
+import 'open_weather_models/forecast_model/foercastListDate.dart';
 import 'open_weather_models/forecast_model/forecastResponse.dart';
 
 part 'main_state.freezed.dart';
@@ -14,5 +15,7 @@ class MainState with _$MainState {
     @Default(0) int dayForecasting,
     required getWetherFromCoordinates? weatherResponse,
     required ForecastResponse? forecastResponse,
+    @Default(false)bool selected ,
+    List<List<ForecastDateList>>? arrayForecastByDays,
   }) = _MainState;
 }

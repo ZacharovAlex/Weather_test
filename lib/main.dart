@@ -1,9 +1,16 @@
+import 'dart:ui';
+
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/date_symbol_data_file.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:weather_simple/repository/repository_weather.dart';
 import 'package:weather_simple/repository/repostory_dadata.dart';
 import 'package:weather_simple/utils/dateFormatter.dart';
+import 'package:weather_simple/utils/pressure.dart';
+import 'package:weather_simple/weatherEnumIcon.dart';
 import 'addrressSearch.dart';
 import 'animation/anim_weather.dart';
 import 'dadata/autocompleteApi.dart';
@@ -15,12 +22,13 @@ import 'main_cubit.dart';
 import 'gen/assets/assets.gen.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 
+import 'modalWindow.dart';
 import 'open_weather_models/forecast_model/foercastListDate.dart';
 import 'open_weather_models/forecast_model/forecastResponse.dart';
+final logger = Logger(printer: SimplePrinter());
 
 void main() {
- // initializeDateFormatting('ru','');
- // Intl.defaultLocale = 'ru_RU';
+
   configureDependencies();
   runApp(const MyApp());
 }
@@ -37,7 +45,7 @@ class MyApp extends StatelessWidget {
        // brightness: Brightness.light,
       //  primarySwatch: Colors.blue,
         textTheme: const TextTheme(
-          headline1: TextStyle(fontSize: 50.0, fontWeight: FontWeight.w700,color: Color(0xFF276587)),
+          headline1: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w700),
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           bodyText2: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
           caption: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w600),
@@ -46,24 +54,32 @@ class MyApp extends StatelessWidget {
       ),
       home: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: Assets.icons.backScreen.image().image,
-            fit: BoxFit.cover,
-          ),
+          color: Colors.white
+          // image: DecorationImage(
+          //
+          //   image: Assets.icons.backScreen.image().image,
+          //   fit: BoxFit.cover,
+          // ),
         ),
         // decoration: const BoxDecoration(gradient: LinearGradient(
         //     begin: Alignment.topLeft,
         //     end: Alignment.bottomRight,
         //   colors: [Color(0xFF08244F),Color(0xFF0B42AB)],
         // )),
-        child:  Scaffold(
+        child:
+//         BackdropFilter(
+// blendMode: BlendMode.softLight,
+//             filter: ImageFilter.blur(sigmaX: 0.5, sigmaY:0.5),
+//           child:
+          Scaffold(
 
-        backgroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
 
-        body: BlocProvider(
-          create: (_) => getIt.get<MainCubit>(),
-          child: RowWidget(),
-        ) ,),)
+          body: BlocProvider(
+            create: (_) => getIt.get<MainCubit>(),
+            child: SafeArea(child: RowWidget()),
+          ) ,),
+        ),
     );
   }
 }
@@ -79,54 +95,39 @@ class RowWidget extends StatelessWidget {
     final dataForecast = context.select((MainCubit cubit) => cubit.state.forecastResponse);
     final dayIndex = context.select((MainCubit cubit) => cubit.state.dayForecasting);
     final nowOrForecast = context.select((MainCubit cubit) => cubit.state.nowOrForecast);
+    final arrayOfForecastDays = context.select((MainCubit cubit) => cubit.state.arrayForecastByDays);
 
    return
-      Padding(padding: const EdgeInsets.only(top: 20),child:
-
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            SizedBox(height: 20,),
+           // ModalBottomSheetDemo(),
           TopCity(),
 
-         if(data!=null && dataForecast!=null ) NowWeatherView(data: data,trigger: nowOrForecast, dataForecast: dataForecast, dayIndex: dayIndex,) else
+         if(data!=null && dataForecast!=null ) NowWeatherView(data: data,trigger: nowOrForecast, dataForecast: dataForecast, dayIndex: dayIndex, arrayForecastingDays: arrayOfForecastDays ,) else
               Text('прогноз отображение'),
 //SizedBox(height: 100,),
-          if (dataForecast!=null)  Container(
-            height: MediaQuery.of(context).size.height/8,
-            child: Expanded(
-                child: TimeScrollForecast(data: dataForecast.forecast4Days, dayToShowIndex: dayIndex,)),
-          ),
-
-//         Container(
-//          // margin: EdgeInsets.only(bottom: 300),
-//           padding: EdgeInsets.symmetric(horizontal: 35,vertical: 12,),
-//          // margin: EdgeInsets.all(50),
-//           decoration: BoxDecoration(
-//             color: Color(0xFF001026).withOpacity(0.3),
-//             borderRadius: BorderRadius.circular(20),
-//             boxShadow: [BoxShadow(color: Color(0x00000040))]
-//           ),
-//           child: Row(
-// mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//             children: [
-//               Assets.icons.kapli.svg(),
-// //if(data!=null) Text(data!..toString()) else CircularProgressIndicator(),
-//               Assets.icons.termometr.svg(),
-//              if(data!=null) Text('${((data.main!.temp!).toInt()).toString()}') else CircularProgressIndicator(),
-//               Assets.icons.wind.svg(),
-//               if(data!=null) Text("${data.wind!.speed.toString()}m/s") else CircularProgressIndicator(),
-//           ],),
-//
-//         ),
-        //  TextButton(onPressed: (){PlaceApiProvider().fetchSuggestions('Мос', 'ru');}, child: Text('ok')),
-        //  TextButton(onPressed: (){}, child: Text('ok'))
-            SizedBox(height: 20,),
-        if (dataForecast!=null)  Expanded(
-            child: ForecastListRow(data: dataForecast,dataNow: data,)) else CircularProgressIndicator(),
-        ],)
 
 
-     );
+            SizedBox(height: 10,),
+          if (dataForecast!=null)
+          //  height: MediaQuery.of(context).size.height/7,
+             Expanded(
+              flex: 4,
+                child: TimeScrollForecast(data: arrayOfForecastDays, dayToShowIndex: dayIndex,)),
+
+
+            SizedBox(height: 10,),
+        if (dataForecast!=null && data!=null)  Expanded(
+            flex: 7,
+            child: ForecastListRow(data: dataForecast,dataNow: data, arrayForecastingDays: arrayOfForecastDays )) else CircularProgressIndicator(),
+           // SizedBox(height: 10,),
+
+        ],);
+
+
+
   }
 }
 
@@ -136,19 +137,50 @@ class TopCity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void showDialogCity(){
+      showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        builder: (_) {
+          return
+            BlocProvider.value(
+                value: BlocProvider.of<MainCubit>(context),
+                child:  ButtonsCity()
+            );
+
+
+
+
+          ElevatedButton(onPressed: (){ context.read<MainCubit>().changeCity('Королёв');}, child: Text('Королев'));
+        },
+      );
+
+    }
+
+
     final data = context.select((MainCubit cubit) => cubit.state.weatherResponse);
     return Padding(
-      padding: EdgeInsets.only(left: 30,right: 30)
+      padding: EdgeInsets.only(left: 40)
 
       ,child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
 
 
       children: [
-        Assets.icons.mapIcon.svg(),
-       SizedBox(width: 10,),
-        if (data!=null) Text(data.name!,style: Theme.of(context).textTheme.bodyText2,)  else CircularProgressIndicator(),
-        Spacer(),
-        Assets.icons.ring.svg()
+
+       // ModalBottomSheetDemo(),
+       // Assets.icons.mapIcon.svg(),
+      // SizedBox(width: 10,),
+        if (data!=null)
+
+
+          GestureDetector(
+              onTap: showDialogCity,
+              child: Text(data.name!,style: Theme.of(context).textTheme.bodyText2,))  else CircularProgressIndicator(),
+       // Spacer(),
+      //  Assets.icons.ring.svg()
 
 
 
@@ -164,63 +196,136 @@ class NowWeatherView extends StatelessWidget {
  final getWetherFromCoordinates data;
  final ForecastResponse dataForecast;
  final NowOrForecast trigger;
+ final List<List<ForecastDateList>>? arrayForecastingDays;
  final int dayIndex;
-  const NowWeatherView({Key? key, required this.data, required this.dataForecast, required this.trigger, required this.dayIndex}) : super(key: key);
+
+  const NowWeatherView({Key? key, required this.data, required this.dataForecast, required this.trigger, required this.dayIndex, this.arrayForecastingDays}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    late SvgPicture iconNowWeather;
+    late Widget pressure;
 var tempNow = '';
 var descriptionNow ='';
+DateTime nowOrForecastDate;
 
+var  riseUp = (DateTime.fromMillisecondsSinceEpoch(data.sys!.sunrise!*1000, isUtc: false));
+var sunset= (DateTime.fromMillisecondsSinceEpoch(data.sys!.sunset!*1000, isUtc: false));
 if (trigger==NowOrForecast.now) {
+
+  iconNowWeather = IconName(data.weather[0]!.id!,50);
+  nowOrForecastDate=DateTime.now();
   tempNow= (data.main!.temp)!.round().toString();
   descriptionNow= data.weather[0]!.description!;
+  pressure = pressureMmRtutniyStolb(data.main!.pressure!,20);
+
 } else if(dayIndex==0) {
-  tempNow=dataForecast.forecast4Days![dayIndex].first.main!.temp!.round().toString();
+  pressure=pressureMmRtutniyStolb(arrayForecastingDays![dayIndex].first.main!.pressure!,20);
+  iconNowWeather = IconName(arrayForecastingDays![dayIndex].first.weather![0].id!,50);
+  nowOrForecastDate=DateTime.now();
+  tempNow=arrayForecastingDays![dayIndex].first.main!.temp!.round().toString();
  descriptionNow= data.weather[0]!.description!;
+
 } else {
-  tempNow = '${dataForecast.temperatureNight(dataForecast.forecast4Days![dayIndex]).toString()}/${dataForecast
-      .temperatureDay(dataForecast.forecast4Days![dayIndex]).toString()}';
-  descriptionNow= dataForecast.forecast4Days![dayIndex][4].weather![0].description!;
+  pressure=pressureMmRtutniyStolb(dataForecast.mediumPressure(arrayForecastingDays![dayIndex]),20);
+  iconNowWeather = IconName(arrayForecastingDays![dayIndex][4].weather![0].id!,50);
+  nowOrForecastDate=dateParser(arrayForecastingDays![dayIndex].first.dtTxt!);
+  tempNow = '${dataForecast.temperatureNight(arrayForecastingDays![dayIndex]).toString()}/${dataForecast
+      .temperatureDay(arrayForecastingDays![dayIndex]).toString()}';
+  descriptionNow= arrayForecastingDays![dayIndex][4].weather![0].description!;
 }
-    return Padding(
-      padding: const EdgeInsets.all(50),
-      child: Container(
-        width: 190,
-        height: 190,
-        decoration: BoxDecoration(
+    return Stack(
+      children: [
 
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.white.withOpacity(0.59), Color(0xF7F7F734).withOpacity(0.3),]
-            ),
-             color: Color(0xFF001026).withOpacity(0.3),
-          shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.8),
-                spreadRadius: 5,
-                blurRadius: 60,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white.withOpacity(0.5),
+                   // shape: BoxShape.circle,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Рассвет',style: Theme.of(context).textTheme.caption,),
+                      Text('${riseUp.hour}.${riseUp.minute}'),
+                    ],
+                  )),
+              Container(
+                width: MediaQuery.of(context).size.width/2.2,
+                height: MediaQuery.of(context).size.width/2.2,
+                decoration: BoxDecoration(
+
+                  border: Border.all(
+                    width: 2,
+                  ),
+                     color: Colors.white.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+               // duration: Duration(seconds: 5),
+                child:   Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/2.8 ,
+                        child: Column(
+
+                        children: [
+                        Text('${dateFormatterWeekday(nowOrForecastDate,trigger)}',style: Theme.of(context).textTheme.caption),
+                        Text('${dateFormatterDayMonth(nowOrForecastDate)}',style: Theme.of(context).textTheme.caption),
+                      ],),),
+
+
+                     // Text('${dateFormatterWeekday(nowOrForecastDate,trigger)}',style: Theme.of(context).textTheme.caption),
+                     //  Text('${dateFormatterDayMonth(nowOrForecastDate)}',style: Theme.of(context).textTheme.caption),
+                      Text('$tempNow'+"\u2103",style: Theme.of(context).textTheme.headline1,),
+                      SizedBox(
+
+                          width: MediaQuery.of(context).size.width/2.8 ,
+                          child: Text('$descriptionNow',style: Theme.of(context).textTheme.caption,textAlign: TextAlign.center,)),
+
+                      pressure,
+                    ],
               ),
-            ]
-          //  border: Border.all(color: ColorName.primary, width: 7 * scaleDownAnimation.value),
-        ),
-        child:   Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          //  Text('${dateFormatter(DateTime.now(),trigger)}'),
+                  ),
+                ),
 
-            Text('$tempNow',style: Theme.of(context).textTheme.headline1,),
-            Text('$descriptionNow',style: Theme.of(context).textTheme.caption,),
-            
-          //  Text(' ${data.weather[0]!.description.toString()}')
-          ],
-      ),
+              ),
+              Container(
+                padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white.withOpacity(0.5),
+
+                  ),
+                  child: Column(
+                    children: [
+                      Text('Закат',style: Theme.of(context).textTheme.caption,),
+                      Text('${sunset.hour}.${sunset.minute}'),
+                    ],
+                  )),
+            ],
+          ),
         ),
-      
-      ),
+        Positioned(
+            top: 0,
+            left: MediaQuery.of(context).size.width/2.0+50,
+            child: Container(child: iconNowWeather ,)),
+      ],
     );
 
     //   Column(children: [
@@ -269,24 +374,23 @@ class TimeScrollForecast extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10,),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.5),
-                    // gradient: LinearGradient(
-                    //     begin: Alignment.topCenter,
-                    //     end: Alignment.bottomCenter,
-                    //     colors: [Colors.blue, Color(0xFF001026).withOpacity(0.3),]
-                    // ),
-                  //  color: Color(0xFF001026).withOpacity(0.3),
+               border: Border.all(
+                          width: 2,
+                        ),
                     borderRadius: BorderRadius.circular(20),
-                  // boxShadow: [BoxShadow(color: Color(0xFF42A0F01A).withOpacity(0.1))]
+                 //  boxShadow: [BoxShadow(color: Color(0xFF42A0F01A).withOpacity(0.1))]
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 if (index==4) Text('12.00',style: Theme.of(context).textTheme.caption) else
                    Text("${dateParser(data![dayToShowIndex][index].dtTxt!).hour}.00",style: Theme.of(context).textTheme.caption),
-                    Assets.icons.sun2.image(height: 25),
+                  //  Assets.icons.sunny.svg(height: 50),
+                  //  Assets.icons.snow.svg(height: 50),
+                    IconName(data![dayToShowIndex][index].weather![0].id!,50.0),
 
-                      Text('${(data![dayToShowIndex][index].main!.temp)!.round()}',style: Theme.of(context).textTheme.bodyText2),
-
+                      Text('${(data![dayToShowIndex][index].main!.temp)!.round()}'+"\u2103",style: Theme.of(context).textTheme.bodyText2),
+                    pressureMmRtutniyStolb(data![dayToShowIndex][index].main!.pressure!,15),
                     // Row(children: [
                     //   Assets.icons.kapli.svg(),
                     //   Text('${(data![dayToShowIndex][index])!}'),
@@ -299,57 +403,122 @@ if (index==4) Text('12.00',style: Theme.of(context).textTheme.caption) else
   }
 }
 
-class Forecast3hViewCarusel extends StatelessWidget {
-  final ForecastResponse? data;
-  const Forecast3hViewCarusel({Key? key, this.data}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 class ForecastListRow extends StatelessWidget {
   final ForecastResponse? data;
   final getWetherFromCoordinates? dataNow;
-  const ForecastListRow({Key? key, this.data, this.dataNow}) : super(key: key);
+  final List<List<ForecastDateList>>? arrayForecastingDays;
+  //final  bool selecged ;
+  const ForecastListRow({Key? key, this.data, this.dataNow, this.arrayForecastingDays}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    ScrollController scrollController = ScrollController();
+
     void clickDayForecast(int index){
       context.read<MainCubit>().changeDayForecasting(index);
       context.read<MainCubit>().changeNowOrForecast(NowOrForecast.forecast);
     }
     return ListView.builder(
-       // scrollDirection: Axis.horizontal,
+        controller: scrollController,
+        scrollDirection: Axis.horizontal,
         shrinkWrap: true,
-        itemCount: data!.forecast4Days!.length,
+        itemCount: arrayForecastingDays!.length,
         itemBuilder: (BuildContext context, int index) {
+          late int dayIndexTodayOrForecast;
+          late int temperatureNight;
+          late int temperatureDay;
+          late Widget pressure;
+          if(index==0){
+            pressure=pressureMmRtutniyStolb(arrayForecastingDays![0][0].main!.pressure!,20);
+          temperatureNight = (arrayForecastingDays![0][0].main!.temp!).round();
+            temperatureDay = (arrayForecastingDays![0][0].main!.temp!).round();
+            dayIndexTodayOrForecast = 0;
+          } else {
+            pressure=pressureMmRtutniyStolb(data!.mediumPressure(arrayForecastingDays![index]),20);//pressure=pressureMmRtutniyStolb(dataForecast.mediumPressure(arrayForecastingDays![dayIndex]),20);
+            temperatureNight =data!.temperatureNight(arrayForecastingDays![index]);
+            temperatureDay = data!.temperatureDay(arrayForecastingDays![index]);
+            dayIndexTodayOrForecast = 4;}
       return GestureDetector(
-        onTap: () => clickDayForecast(index),
+        onTap: () {
+          scrollController.animateTo(index*130, duration: Duration(seconds: 2), curve: Curves.easeInOut );
+         // scrollController.position.
+              clickDayForecast(index);
+        },
         child: Padding(
-          padding: EdgeInsets.only(top: 10),
+          padding: EdgeInsets.only(left: 15),
           child: Container(
-            // margin: EdgeInsets.only(bottom: 300),
-            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 12,),
-            // margin: EdgeInsets.all(50),
+            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10,),
             decoration: BoxDecoration(
-                color: Color(0xFF001026).withOpacity(0.3),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [BoxShadow(color: Color(0x00000040))]
+              color:  Colors.white.withOpacity(0.5) ,
+              border: Border.all(
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(20),
+
             ),
-            child: Row(
+            child: Column(
 
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('${weekdayParser(dateParser(data!.forecast4Days![index][0].dtTxt!))}',style: Theme.of(context).textTheme.bodyText1),
+                Text('${dateFormatterDayMonth(dateParser(arrayForecastingDays![index][0].dtTxt!))}',style: Theme.of(context).textTheme.caption),
+                Text('${weekdayParser(dateParser(arrayForecastingDays![index][0].dtTxt!))}',style: Theme.of(context).textTheme.bodyText1),
+                IconName(arrayForecastingDays![index][dayIndexTodayOrForecast].weather![0].id!,70.0), //IconName(arrayForecastingDays![index][0].weather![0].id!,100.0),
+                Container(child:
+                 index!=0? Column(children: [
+                    Row(children: [
+                      Text('Ночь : '),
+                      Text('${temperatureNight}'+"\u2103")
+
+                    ],),
+                    Row(children: [
+                      Text('День : '),
+                      Text('${temperatureDay}'+"\u2103")
+                    ],),
+                  ],): Text('${temperatureDay}'+"\u2103")
+
+                  ,),
+
+
+                SizedBox(width: 5,),
+                Row(
+                  children: [
+                    Text('Давление : '),
+                    pressure,
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text('Сила ветра : '),
+                    Text('${data!.mediumWind(arrayForecastingDays![index])}м/с')
+                  ],
+                ),
+
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: [
+                //   Column(children: [
+                //     Assets.icons.wind.svg(),
+                //     Text('${data!.mediumWind(arrayForecastingDays![index])}м/с',style: Theme.of(context).textTheme.caption)
+                //   ],),
+                //   SizedBox(width: 20,),
+                //   Column(children: [
+                //     Assets.icons.wind.svg(),
+                //     Text('${data!.mediumWind(arrayForecastingDays![index])}',style: Theme.of(context).textTheme.caption)
+                //   ],),
+                //     SizedBox(width: 20,),
+                //   Column(children: [
+                //     Assets.icons.wind.svg(),
+                //     Text('${data!.mediumWind(arrayForecastingDays![index])}',style: Theme.of(context).textTheme.caption)
+                //   ],),
+                // ],),
                 SizedBox(width: 10,),
-                Container(
-                  width: 100,
-                  child: index==0? Text(" ${dataNow!.weather[0]!.description}",style: Theme.of(context).textTheme.caption,):
-                Text(" ${data!.forecast4Days![index][4].weather![0].description}",style: Theme.of(context).textTheme.caption),),
-               index!=0? Text(' День ${data!.temperatureDay(data!.forecast4Days![index])}',style: Theme.of(context).textTheme.caption): SizedBox(),
-                index!=0? Text(' Ночь ${data!.temperatureNight(data!.forecast4Days![index])}',style: Theme.of(context).textTheme.caption): SizedBox(),
+                // Container(
+                //   width: 100,
+                //   child: index==0? Text(" ${dataNow!.weather[0]!.description}",style: Theme.of(context).textTheme.caption,):
+                // Text(" ${data!.forecast4Days![index][4].weather![0].description}",style: Theme.of(context).textTheme.caption),),
+              // index!=0? Text('${data!.temperatureNight(arrayForecastingDays![index])}/${data!.temperatureDay(arrayForecastingDays![index])}',style: Theme.of(context).textTheme.bodyText2): SizedBox(),
+            //  Text('${dataNow!.main!.temp!.round().toString()}/${dataNow!.main!.tempMin!.round().toString()}',style: Theme.of(context).textTheme.bodyText2)
 
               ],),
 

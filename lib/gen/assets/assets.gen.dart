@@ -18,8 +18,11 @@ class $AssetsIconsGen {
   AssetGenImage get backScreen =>
       const AssetGenImage('assets/icons/backScreen.png');
 
-  /// File path: assets/icons/cloud2.svg
-  SvgGenImage get cloud2 => const SvgGenImage('assets/icons/cloud2.svg');
+  /// File path: assets/icons/cloudy.svg
+  SvgGenImage get cloudy => const SvgGenImage('assets/icons/cloudy.svg');
+
+  /// File path: assets/icons/fewCloud.svg
+  SvgGenImage get fewCloud => const SvgGenImage('assets/icons/fewCloud.svg');
 
   /// File path: assets/icons/kapli.svg
   SvgGenImage get kapli => const SvgGenImage('assets/icons/kapli.svg');
@@ -27,17 +30,36 @@ class $AssetsIconsGen {
   /// File path: assets/icons/mapIcon.svg
   SvgGenImage get mapIcon => const SvgGenImage('assets/icons/mapIcon.svg');
 
-  /// File path: assets/icons/ring.svg
-  SvgGenImage get ring => const SvgGenImage('assets/icons/ring.svg');
+  /// File path: assets/icons/mist.svg
+  SvgGenImage get mist => const SvgGenImage('assets/icons/mist.svg');
 
-  /// File path: assets/icons/sun.svg
-  SvgGenImage get sun => const SvgGenImage('assets/icons/sun.svg');
+  /// File path: assets/icons/mostlyClouds.svg
+  SvgGenImage get mostlyClouds =>
+      const SvgGenImage('assets/icons/mostlyClouds.svg');
 
-  /// File path: assets/icons/sun2.png
-  AssetGenImage get sun2 => const AssetGenImage('assets/icons/sun2.png');
+  /// File path: assets/icons/rain.svg
+  SvgGenImage get rain => const SvgGenImage('assets/icons/rain.svg');
+
+  /// File path: assets/icons/scatteredClouds.svg
+  SvgGenImage get scatteredClouds =>
+      const SvgGenImage('assets/icons/scatteredClouds.svg');
+
+  /// File path: assets/icons/showerRain.svg
+  SvgGenImage get showerRain =>
+      const SvgGenImage('assets/icons/showerRain.svg');
+
+  /// File path: assets/icons/snow.svg
+  SvgGenImage get snow => const SvgGenImage('assets/icons/snow.svg');
+
+  /// File path: assets/icons/sunny.svg
+  SvgGenImage get sunny => const SvgGenImage('assets/icons/sunny.svg');
 
   /// File path: assets/icons/termometr.svg
   SvgGenImage get termometr => const SvgGenImage('assets/icons/termometr.svg');
+
+  /// File path: assets/icons/thunderstorm.svg
+  SvgGenImage get thunderstorm =>
+      const SvgGenImage('assets/icons/thunderstorm.svg');
 
   /// File path: assets/icons/wind.svg
   SvgGenImage get wind => const SvgGenImage('assets/icons/wind.svg');
