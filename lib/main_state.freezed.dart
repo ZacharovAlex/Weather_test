@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MainState {
+  AppError? get error => throw _privateConstructorUsedError;
   NowOrForecast get nowOrForecast => throw _privateConstructorUsedError;
   int get dayForecasting => throw _privateConstructorUsedError;
   getWetherFromCoordinates? get weatherResponse =>
@@ -36,7 +37,8 @@ abstract class $MainStateCopyWith<$Res> {
       _$MainStateCopyWithImpl<$Res, MainState>;
   @useResult
   $Res call(
-      {NowOrForecast nowOrForecast,
+      {AppError? error,
+      NowOrForecast nowOrForecast,
       int dayForecasting,
       getWetherFromCoordinates? weatherResponse,
       ForecastResponse? forecastResponse,
@@ -57,6 +59,7 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? error = freezed,
     Object? nowOrForecast = null,
     Object? dayForecasting = null,
     Object? weatherResponse = freezed,
@@ -65,6 +68,10 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
     Object? arrayForecastByDays = freezed,
   }) {
     return _then(_value.copyWith(
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as AppError?,
       nowOrForecast: null == nowOrForecast
           ? _value.nowOrForecast
           : nowOrForecast // ignore: cast_nullable_to_non_nullable
@@ -101,7 +108,8 @@ abstract class _$$_MainStateCopyWith<$Res> implements $MainStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {NowOrForecast nowOrForecast,
+      {AppError? error,
+      NowOrForecast nowOrForecast,
       int dayForecasting,
       getWetherFromCoordinates? weatherResponse,
       ForecastResponse? forecastResponse,
@@ -120,6 +128,7 @@ class __$$_MainStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? error = freezed,
     Object? nowOrForecast = null,
     Object? dayForecasting = null,
     Object? weatherResponse = freezed,
@@ -128,6 +137,10 @@ class __$$_MainStateCopyWithImpl<$Res>
     Object? arrayForecastByDays = freezed,
   }) {
     return _then(_$_MainState(
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as AppError?,
       nowOrForecast: null == nowOrForecast
           ? _value.nowOrForecast
           : nowOrForecast // ignore: cast_nullable_to_non_nullable
@@ -160,7 +173,8 @@ class __$$_MainStateCopyWithImpl<$Res>
 
 class _$_MainState implements _MainState {
   const _$_MainState(
-      {this.nowOrForecast = NowOrForecast.now,
+      {this.error,
+      this.nowOrForecast = NowOrForecast.now,
       this.dayForecasting = 0,
       required this.weatherResponse,
       required this.forecastResponse,
@@ -168,6 +182,8 @@ class _$_MainState implements _MainState {
       final List<List<ForecastDateList>>? arrayForecastByDays})
       : _arrayForecastByDays = arrayForecastByDays;
 
+  @override
+  final AppError? error;
   @override
   @JsonKey()
   final NowOrForecast nowOrForecast;
@@ -192,7 +208,7 @@ class _$_MainState implements _MainState {
 
   @override
   String toString() {
-    return 'MainState(nowOrForecast: $nowOrForecast, dayForecasting: $dayForecasting, weatherResponse: $weatherResponse, forecastResponse: $forecastResponse, selected: $selected, arrayForecastByDays: $arrayForecastByDays)';
+    return 'MainState(error: $error, nowOrForecast: $nowOrForecast, dayForecasting: $dayForecasting, weatherResponse: $weatherResponse, forecastResponse: $forecastResponse, selected: $selected, arrayForecastByDays: $arrayForecastByDays)';
   }
 
   @override
@@ -200,6 +216,7 @@ class _$_MainState implements _MainState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MainState &&
+            (identical(other.error, error) || other.error == error) &&
             (identical(other.nowOrForecast, nowOrForecast) ||
                 other.nowOrForecast == nowOrForecast) &&
             (identical(other.dayForecasting, dayForecasting) ||
@@ -217,6 +234,7 @@ class _$_MainState implements _MainState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      error,
       nowOrForecast,
       dayForecasting,
       weatherResponse,
@@ -233,13 +251,16 @@ class _$_MainState implements _MainState {
 
 abstract class _MainState implements MainState {
   const factory _MainState(
-      {final NowOrForecast nowOrForecast,
+      {final AppError? error,
+      final NowOrForecast nowOrForecast,
       final int dayForecasting,
       required final getWetherFromCoordinates? weatherResponse,
       required final ForecastResponse? forecastResponse,
       final bool selected,
       final List<List<ForecastDateList>>? arrayForecastByDays}) = _$_MainState;
 
+  @override
+  AppError? get error;
   @override
   NowOrForecast get nowOrForecast;
   @override

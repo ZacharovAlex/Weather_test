@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:injectable/injectable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_simple/repository/repository_weather.dart';
+import 'package:weather_simple/utils/boundary.dart';
 
 import 'coord.dart';
 import 'enum_now_or_forecast.dart';
+import 'errors/network_connection_error.dart';
 import 'getWeatherResponse.dart';
 import 'main_state.dart';
 import 'open_weather_models/forecast_model/foercastListDate.dart';
@@ -16,16 +19,17 @@ import 'open_weather_models/forecast_model/forecastResponse.dart';
 @injectable
 class MainCubit extends Cubit<MainState> {
   final WeatherRepository _weatherRepository;
-
+  ConnectivityResult _connectivityStatus = ConnectivityResult.none;
+  late final StreamSubscription _connectivitySubscription;
   MainCubit(@factoryParam getWetherFromCoordinates? weather,@factoryParam ForecastResponse? weatherForecast, this._weatherRepository) : super(MainState(weatherResponse: weather,forecastResponse: weatherForecast)) {
     if (weather == null) {
       _getWeatherFromCoordinates();
      // _getWeatherFromCity();
 
     }
-    // if (forecastArrayByDays==null){
-    //   forecastArrayByDays();
-    // }
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((result) {
+      _connectivityStatus = result;
+    });
   }
   void changeDayForecasting(int dayForecastToView) {
     emit(state.copyWith(dayForecasting: dayForecastToView));
@@ -37,20 +41,35 @@ class MainCubit extends Cubit<MainState> {
 
 
   Future<void> _getWeatherFromCoordinates() async {
+
     var coordinate = await determinePosition();
-    final data = await _weatherRepository.getWeatherRightAway(coordinate.latitude.toString(),coordinate.longitude.toString(),null);
+    if (_connectivityStatus == ConnectivityResult.none) {
+      return emit(state.copyWith(error: const NetworkConnectionError()));
+    }
+    final result = await _weatherRepository.getWeatherRightAway(coordinate.latitude.toString(),coordinate.longitude.toString(),null);
     final dataForecast = await _weatherRepository.getWeatherForecast(coordinate.latitude.toString(),coordinate.longitude.toString(),null);
-    emit(state.copyWith(weatherResponse: data));
+    var data = (result).data;
+    var error = (result).error;
+    if (data != null) {
+      emit(state.copyWith(weatherResponse: data));
+    }else {
+      emit(state.copyWith( error: error));
+    }
+   // emit(state.copyWith(weatherResponse: data.data));
     if (dataForecast!=null) {
       emit(state.copyWith(arrayForecastByDays: forecastArrayByDays(dataForecast.list)));
     }
     emit(state.copyWith(forecastResponse: dataForecast));
   }
 
+  void errorHandled() {
+    emit(state.copyWith(error: null));
+  }
+
   Future<void> _getWeatherFromCity(String city) async {
     final data = await _weatherRepository.getWeatherRightAway(null,null,city);
     final dataForecast = await _weatherRepository.getWeatherForecast(null,null,city);
-    emit(state.copyWith(weatherResponse: data));
+    emit(state.copyWith(weatherResponse: data.data));
    if (dataForecast!=null) {
       emit(state.copyWith(arrayForecastByDays: forecastArrayByDays(dataForecast.list)));
     }

@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:weather_simple/errors/api_error.dart';
 
 import '../coord.dart';
+import '../errors/error_parser.dart';
 import '../getWeatherResponse.dart';
 import '../open_weather_models/forecast_model/forecastResponse.dart';
 import '../utils/boundary.dart';
@@ -12,20 +14,20 @@ class WeatherRepository {
   WeatherRepository(this._weatherApi);
 
 
-  Future<getWetherFromCoordinates?> getWeatherRightAway(String? lat,String? lon,String? city,) async {
+  Future<NetworkBoundary<getWetherFromCoordinates>> getWeatherRightAway(String? lat,String? lon,String? city,) async {
 
     try {
       var response = await _weatherApi.getWeatherRightAway(lat,lon,city,'1ca4000c3a81765bcd106423bf367de7','ru','metric');
 
-      if (response!=null) {
+      if (response.main!=null) {
 
-        return NetworkBoundary(data: response.data!);
-      }
+        return NetworkBoundary(data: response);
+      } else{ throw ApiError(response.toString());}
 
 
-      return response;
+
     } catch (e) {
-      return null;
+      return NetworkBoundary(error: parseError(e));
     }
 
   }

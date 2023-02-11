@@ -52,34 +52,14 @@ class MyApp extends StatelessWidget {
           bodyText1: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
         ),
       ),
-      home: Container(
-        decoration: BoxDecoration(
-          color: Colors.white
-          // image: DecorationImage(
-          //
-          //   image: Assets.icons.backScreen.image().image,
-          //   fit: BoxFit.cover,
-          // ),
-        ),
-        // decoration: const BoxDecoration(gradient: LinearGradient(
-        //     begin: Alignment.topLeft,
-        //     end: Alignment.bottomRight,
-        //   colors: [Color(0xFF08244F),Color(0xFF0B42AB)],
-        // )),
-        child:
-//         BackdropFilter(
-// blendMode: BlendMode.softLight,
-//             filter: ImageFilter.blur(sigmaX: 0.5, sigmaY:0.5),
-//           child:
-          Scaffold(
+      home: Scaffold(
 
-          backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
 
-          body: BlocProvider(
-            create: (_) => getIt.get<MainCubit>(),
-            child: SafeArea(child: RowWidget()),
-          ) ,),
-        ),
+      body: BlocProvider(
+        create: (_) => getIt.get<MainCubit>(),
+        child: SafeArea(child: RowWidget()),
+      ) ,),
     );
   }
 }
