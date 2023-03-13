@@ -12,8 +12,8 @@ Widget pressureMmRtutniyStolb(int hPaskal,double fontSize){
   late Color color;
   final press = hPaskal*0.7500637554192;
   if(press>minNormalPressure&&press<maxNormalPressure) {color=Colors.black;}
-  if(press<minNormalPressure) {color=Colors.blue;}
-  if(press>maxNormalPressure) {color=Colors.deepOrangeAccent;}
+  if(press<minNormalPressure) {color=Colors.deepOrangeAccent;}
+  if(press>maxNormalPressure) {color=Colors.blue;}
   return
   Row(
     mainAxisAlignment: MainAxisAlignment.center,

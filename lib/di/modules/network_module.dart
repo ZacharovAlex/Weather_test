@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +18,7 @@ parseJson(String text) {
 
 @module
 abstract class RegisterModule {
+
   @lazySingleton
   Dio dio() {
     final dio = Dio(BaseOptions(
@@ -32,7 +32,6 @@ abstract class RegisterModule {
 
     return dio;
   }
-
   @lazySingleton
   WetherApi wetherApi(Dio dio) => WetherApi(dio);
 

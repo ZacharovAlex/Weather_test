@@ -65,10 +65,18 @@ class $AssetsIconsGen {
   SvgGenImage get wind => const SvgGenImage('assets/icons/wind.svg');
 }
 
+class $AssetsRiveGen {
+  const $AssetsRiveGen();
+
+  /// File path: assets/rive/cloud-and-sun.riv
+  String get cloudAndSun => 'assets/rive/cloud-and-sun.riv';
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsRiveGen rive = $AssetsRiveGen();
 }
 
 class AssetGenImage {

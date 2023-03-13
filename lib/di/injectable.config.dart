@@ -5,17 +5,21 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:dio/dio.dart' as _i3;
+import 'dart:async' as _i11;
+
+import 'package:dio/dio.dart' as _i5;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../getWeatherResponse.dart' as _i7;
-import '../main_cubit.dart' as _i6;
-import '../open_weather_models/forecast_model/forecastResponse.dart' as _i8;
-import '../repository/repository_weather.dart' as _i5;
-import '../wether_api.dart' as _i4;
+import '../dadata/autocompleteApi.dart' as _i4;
+import '../getWeatherResponse.dart' as _i9;
+import '../main_cubit.dart' as _i8;
+import '../open_weather_models/forecast_model/forecastResponse.dart' as _i10;
+import '../repository/repository_weather.dart' as _i7;
+import '../repository/repostory_dadata.dart' as _i3;
+import '../wether_api.dart' as _i6;
 import 'modules/network_module.dart'
-    as _i9; // ignore_for_file: unnecessary_lambdas
+    as _i12; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -30,22 +34,26 @@ _i1.GetIt $initGetIt(
     environmentFilter,
   );
   final registerModule = _$RegisterModule();
-  gh.lazySingleton<_i3.Dio>(() => registerModule.dio());
-  gh.lazySingleton<_i4.WetherApi>(
-      () => registerModule.wetherApi(get<_i3.Dio>()));
-  gh.singleton<_i5.WeatherRepository>(
-      _i5.WeatherRepository(get<_i4.WetherApi>()));
-  gh.factoryParam<_i6.MainCubit, _i7.getWetherFromCoordinates?,
-      _i8.ForecastResponse?>((
+  gh.singleton<_i3.DadataRepository>(
+      _i3.DadataRepository(get<_i4.AutocompleteApi>()));
+  gh.lazySingleton<_i5.Dio>(() => registerModule.dio());
+  gh.lazySingleton<_i6.WetherApi>(
+      () => registerModule.wetherApi(get<_i5.Dio>()));
+  gh.singleton<_i7.WeatherRepository>(
+      _i7.WeatherRepository(get<_i6.WetherApi>()));
+  gh.factoryParam<_i8.MainCubit, _i9.getWetherFromCoordinates?,
+      _i10.ForecastResponse?>((
     weather,
     weatherForecast,
   ) =>
-      _i6.MainCubit(
+      _i8.MainCubit(
         weather,
         weatherForecast,
-        get<_i5.WeatherRepository>(),
+        get<_i7.WeatherRepository>(),
+        get<_i3.DadataRepository>(),
+        get<_i11.StreamSubscription<dynamic>>(),
       ));
   return get;
 }
 
-class _$RegisterModule extends _i9.RegisterModule {}
+class _$RegisterModule extends _i12.RegisterModule {}

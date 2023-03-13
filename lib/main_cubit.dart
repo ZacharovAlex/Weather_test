@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_simple/repository/repository_weather.dart';
+import 'package:weather_simple/repository/repostory_dadata.dart';
 import 'package:weather_simple/utils/boundary.dart';
 
 import 'coord.dart';
@@ -19,9 +20,10 @@ import 'open_weather_models/forecast_model/forecastResponse.dart';
 @injectable
 class MainCubit extends Cubit<MainState> {
   final WeatherRepository _weatherRepository;
+  final DadataRepository _dadataRepository;
   ConnectivityResult _connectivityStatus = ConnectivityResult.none;
   late final StreamSubscription _connectivitySubscription;
-  MainCubit(@factoryParam getWetherFromCoordinates? weather,@factoryParam ForecastResponse? weatherForecast, this._weatherRepository) : super(MainState(weatherResponse: weather,forecastResponse: weatherForecast)) {
+  MainCubit(@factoryParam getWetherFromCoordinates? weather,@factoryParam ForecastResponse? weatherForecast, this._weatherRepository, this._dadataRepository, this._connectivitySubscription) : super(MainState(weatherResponse: weather,forecastResponse: weatherForecast)) {
     if (weather == null) {
       _getWeatherFromCoordinates();
      // _getWeatherFromCity();
@@ -48,6 +50,8 @@ class MainCubit extends Cubit<MainState> {
     }
     final result = await _weatherRepository.getWeatherRightAway(coordinate.latitude.toString(),coordinate.longitude.toString(),null);
     final dataForecast = await _weatherRepository.getWeatherForecast(coordinate.latitude.toString(),coordinate.longitude.toString(),null);
+    final daDataResult = await _dadataRepository.getAutocomplete();
+
     var data = (result).data;
     var error = (result).error;
     if (data != null) {

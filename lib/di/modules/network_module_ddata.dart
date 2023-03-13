@@ -7,7 +7,6 @@
 //
 // import '../../dadata/autocompleteApi.dart';
 //
-//
 // _parseAndDecode(String response) {
 //   return jsonDecode(response);
 // }
@@ -17,7 +16,7 @@
 // }
 //
 // @module
-// abstract class RegisterModule {
+// abstract class DadataModule {
 //   @lazySingleton
 //   Dio dioData() {
 //     final dioData = Dio(BaseOptions(
@@ -31,26 +30,27 @@
 //
 //     return dioData;
 //   }
+//
 //   @lazySingleton
 //   AutocompleteApi autofillApi(Dio dioData) => AutocompleteApi(dioData);
 // }
+
+// @module
+// abstract class DadataModule {
+//   @lazySingleton
+//   Dio dio() {
+//     final dio = Dio(BaseOptions(
+//         baseUrl: 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest',
+//         responseType: ResponseType.json,
+//         contentType: ContentType.json.toString()));
 //
-// // @module
-// // abstract class DadataModule {
-// //   @lazySingleton
-// //   Dio dio() {
-// //     final dio = Dio(BaseOptions(
-// //         baseUrl: 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest',
-// //         responseType: ResponseType.json,
-// //         contentType: ContentType.json.toString()));
-// //
-// //     dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
-// //
-// //     (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
-// //
-// //     return dio;
-// //   }
-// //
-// //   @lazySingleton
-// //   AutocompleteApi autofillApi(Dio dio) => AutocompleteApi(dio);
-// // }
+//     dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+//
+//     (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
+//
+//     return dio;
+//   }
+//
+//   @lazySingleton
+//   AutocompleteApi autofillApi(Dio dio) => AutocompleteApi(dio);
+// }
